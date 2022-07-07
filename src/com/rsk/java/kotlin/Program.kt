@@ -1,12 +1,20 @@
 package com.rsk.java.kotlin
 
-import com.sun.deploy.uitoolkit.impl.awt.AWTDragHelper
 
 fun main(args: Array<String>) {
-    var m:Meeting? = null
+    var m:Meeting? = Meeting()
     var newMeeting = Meeting()
 
+    //Elvis operator
     newMeeting = m ?: Meeting()
+    /*
+    Equivalent to
+    if(m != null){
+        newMeeting = m
+    }else{
+        newMeeting = Meeting()
+    }
+     */
 
     closeMeeting(m)
     closeMeeting(newMeeting)
@@ -14,6 +22,8 @@ fun main(args: Array<String>) {
     m?.let {
         closeMeetingNonNull(m)
     }
+
+
 
 }
 
@@ -34,9 +44,21 @@ class Meeting{
         return true
     }
 
-    fun saveo(o:Any){
+    fun save(o:Any){
         val saveable = o as? ISaveable
+        /*
+        Only called if saveable is not null
+        It's a safe call operator(?)
+         */
         saveable?.save()
+        /*
+        Equivalent to
+        if(saveable != null){
+            saveable.save()
+         }else{
+         //do nothing
+         }
+         */
     }
 
     fun init(addr:Address){
@@ -45,7 +67,9 @@ class Meeting{
 }
 
 interface ISaveable{
-    fun save()
+    fun save(){
+        "Saved"
+    }
 }
 
 class Address{
